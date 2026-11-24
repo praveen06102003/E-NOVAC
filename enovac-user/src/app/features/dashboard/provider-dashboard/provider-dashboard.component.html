@@ -1,0 +1,720 @@
+
+<div class="dashboard-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-brand">
+      <img
+        src="/assets/enovac-logo-darknavy.png"
+        alt="E@NOVAC"
+        class="sidebar-logo"
+      />
+    </div>
+
+    <div class="sidebar-menu">
+
+      <p class="menu-label">MAIN MENU</p>
+
+      <a
+        class="nav-item"
+        [class.active]="activeSection === 'dashboard'"
+        (click)="showSection('dashboard')">
+        <span class="nav-icon">▦</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a
+        class="nav-item"
+        [class.active]="activeSection === 'manage-menu'"
+        (click)="showSection('manage-menu')">
+        <span class="nav-icon">🍽</span>
+        <span>Manage Menu</span>
+      </a>
+
+      <p class="menu-label">ORDER MANAGEMENT</p>
+
+<a
+  class="nav-item"
+  [class.active]="activeSection === 'active-orders'"
+  (click)="showSection('active-orders')">
+  <span class="nav-icon">▤</span>
+  <span>Active Orders</span>
+</a>
+
+<a
+  class="nav-item"
+  [class.active]="activeSection === 'collected-orders'"
+  (click)="showSection('collected-orders')">
+  <span class="nav-icon">✓</span>
+  <span>Collected Orders</span>
+</a>
+
+    </div>
+
+<div class="sidebar-bottom">
+  <button class="logout-button" (click)="logout()">
+    <span class="logout-icon">↗</span>
+    <span>Logout</span>
+  </button>
+</div>
+
+  </aside>
+
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- HEADER -->
+    <header class="top-header">
+
+      <div>
+        <span class="header-label">CAFETERIA PORTAL</span>
+        <h2>Provider Dashboard</h2>
+      </div>
+
+      <div class="header-right">
+
+<div class="profile-section">
+
+  <div class="profile-avatar">
+    {{ providerInitial }}
+  </div>
+
+  <div class="profile-details">
+    <strong>{{ providerName }}</strong>
+    <span>E@NOVAC Administrator</span>
+  </div>
+
+</div>
+      </div>
+
+    </header>
+
+
+    <!-- ====================================== -->
+    <!-- DASHBOARD SECTION -->
+    <!-- ====================================== -->
+
+    <section
+      class="dashboard-content"
+      *ngIf="activeSection === 'dashboard'">
+
+      <!-- WELCOME BANNER -->
+      <div class="welcome-banner">
+
+        <div class="welcome-text">
+
+          <span class="welcome-label">
+            CAFETERIA MANAGEMENT PORTAL
+          </span>
+
+          <h1>Welcome back, {{ providerName }} 👋</h1>
+
+          <p>
+            Manage your daily menu and keep track of employee orders.
+          </p>
+
+        </div>
+
+<div class="welcome-decoration">
+
+  <div class="banner-image-container">
+
+    <img
+      [src]="bannerImageOne"
+      class="banner-food-image"
+      [class.visible]="activeBannerLayer === 'one'"
+      alt="Featured food"
+    />
+
+    <img
+      [src]="bannerImageTwo"
+      class="banner-food-image"
+      [class.visible]="activeBannerLayer === 'two'"
+      alt="Featured food"
+    />
+
+  </div>
+
+  <div class="banner-dots">
+    <span
+      *ngFor="let image of bannerImages; let i = index"
+      [class.active]="currentBannerImage === i">
+    </span>
+  </div>
+
+</div>
+
+      </div>
+
+
+      <!-- SUMMARY CARDS -->
+      <div class="summary-grid">
+
+        <div class="summary-card">
+          <div class="summary-icon teal-icon">▤</div>
+          <div>
+            <span>Total Active Orders</span>
+            <h3>{{ activeOrders.length }}</h3>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon orange-icon">◷</div>
+          <div>
+            <span>Preparing</span>
+            <h3>{{ preparingCount }}</h3>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon navy-icon">✓</div>
+          <div>
+            <span>Ready to Collect</span>
+            <h3>{{ readyCount }}</h3>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon teal-icon">📦</div>
+          <div>
+            <span>Collected</span>
+            <h3>{{ collectedCount }}</h3>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ORDERS HEADING -->
+      <div class="section-heading">
+
+        <div>
+          <span class="section-label">ORDER MANAGEMENT</span>
+          <h2>Recent Orders</h2>
+          <p>Monitor and manage incoming cafeteria orders.</p>
+        </div>
+
+      </div>
+
+
+      <!-- ORDERS SECTION -->
+      <div class="orders-section">
+
+        <div *ngIf="isLoading" class="menu-message">
+          Loading orders...
+        </div>
+
+        <div *ngIf="errorMessage" class="menu-message error">
+          {{ errorMessage }}
+        </div>
+
+        <div
+          *ngIf="!isLoading && !errorMessage && activeOrders.length === 0"
+          class="menu-message">
+          No active orders available.
+        </div>
+
+
+        <!-- ORDER CARDS -->
+        <div
+          class="order-card"
+          *ngFor="let order of activeOrders">
+
+          <div class="order-header">
+
+            <div>
+              <span class="section-label">
+                ORDER #{{ order.orderId }}
+              </span>
+
+              <h3>Order Details</h3>
+
+              <p>
+                Employee: {{ order.employee?.fullName || 'Employee' }}
+              </p>
+            </div>
+
+            <span
+              class="order-status"
+              [ngClass]="order.orderStatus.toLowerCase()">
+              {{ order.orderStatus }}
+            </span>
+
+          </div>
+
+
+          <!-- FOOD ITEMS -->
+          <div class="order-items">
+
+            <div
+              class="order-item"
+              *ngFor="let item of order.orderItems">
+
+              <span>
+                {{ item.menuItem?.foodName || 'Food item' }}
+                × {{ item.quantity }}
+              </span>
+
+              <strong>
+                ₹{{ item.unitPrice * item.quantity | number:'1.2-2' }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- TOTAL -->
+          <div class="order-total">
+
+            <span>Total Amount</span>
+
+            <strong>
+              ₹{{ order.totalAmount | number:'1.2-2' }}
+            </strong>
+
+          </div>
+
+
+          <!-- STATUS ACTIONS -->
+          <div class="order-actions">
+
+            <button
+              *ngIf="order.orderStatus === 'Received'"
+              class="add-button"
+              (click)="updateStatus(order.orderId, 'Preparing')">
+              Start Preparing
+            </button>
+
+            <button
+              *ngIf="order.orderStatus === 'Preparing'"
+              class="add-button"
+              (click)="updateStatus(order.orderId, 'Ready')">
+              Mark Ready
+            </button>
+
+            <button
+              *ngIf="order.orderStatus === 'Ready'"
+              class="add-button"
+              (click)="updateStatus(order.orderId, 'Collected')">
+              Mark Collected
+            </button>
+
+            <button
+              *ngIf="order.orderStatus === 'Collected'"
+              class="clear-button"
+              (click)="clearOrder(order.orderId)">
+              Clear
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================== -->
+    <!-- MANAGE MENU SECTION -->
+    <!-- ====================================== -->
+
+    <section
+      class="dashboard-content"
+      *ngIf="activeSection === 'manage-menu'">
+
+      <!-- SECTION HEADING -->
+      <div class="section-heading">
+
+        <div>
+          <span class="section-label">MENU MANAGEMENT</span>
+
+          <h2>Manage Menu</h2>
+
+          <p>
+            Add and manage your cafeteria's daily food items.
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- ADD / EDIT MENU FORM -->
+      <div class="menu-form-card" id="menu-form">
+
+        <h3>
+          {{ editingMenuItemId ? 'Edit Menu Item' : 'Add New Menu Item' }}
+        </h3>
+
+        <form (ngSubmit)="saveMenuItem()">
+
+          <div class="form-grid">
+
+            <!-- MENU DATE -->
+            <div class="form-group">
+
+              <label>Menu Date</label>
+
+              <input
+                type="date"
+                name="menuDate"
+                [(ngModel)]="newMenuItem.menuDate"
+                required>
+
+            </div>
+
+
+            <!-- MEAL CATEGORY -->
+            <div class="form-group">
+
+              <label>Meal Category</label>
+
+              <select
+                name="mealTypeId"
+                [(ngModel)]="newMenuItem.mealTypeId"
+                required>
+
+                <option [ngValue]="0" disabled>
+                  Select Category
+                </option>
+
+                <option [ngValue]="1">Breakfast</option>
+                <option [ngValue]="2">Lunch</option>
+                <option [ngValue]="3">Evening Snacks</option>
+
+              </select>
+
+            </div>
+
+
+            <!-- FOOD NAME -->
+            <div class="form-group">
+
+              <label>Food Name</label>
+
+              <input
+                type="text"
+                name="foodName"
+                [(ngModel)]="newMenuItem.foodName"
+                placeholder="Enter food name"
+                required>
+
+            </div>
+
+
+            <!-- PRICE -->
+            <div class="form-group">
+
+              <label>Price (₹)</label>
+
+              <input
+                type="number"
+                name="price"
+                [(ngModel)]="newMenuItem.price"
+                placeholder="Enter price"
+                min="0.01"
+                step="0.01"
+                required>
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+            <div class="form-group full-width">
+
+              <label>Description (Optional)</label>
+
+              <textarea
+                name="description"
+                [(ngModel)]="newMenuItem.description"
+                placeholder="Enter food description">
+              </textarea>
+
+            </div>
+
+          </div>
+
+
+          <!-- FORM ACTIONS -->
+          <div class="form-actions">
+
+            <button
+              type="submit"
+              class="add-button"
+              [disabled]="isMenuLoading">
+
+              {{ isMenuLoading
+                ? 'Saving...'
+                : editingMenuItemId
+                  ? 'Update Menu Item'
+                  : '+ Add Menu Item' }}
+
+            </button>
+
+            <button
+              *ngIf="editingMenuItemId !== null"
+              type="button"
+              class="cancel-button"
+              (click)="cancelEdit()">
+
+              Cancel
+
+            </button>
+
+          </div>
+
+
+          <!-- FORM MESSAGE -->
+          <p
+            *ngIf="menuMessage"
+            class="menu-message"
+            [class.success]="menuMessage.includes('successfully')"
+            [class.error]="menuMessage.includes('Unable') || menuMessage.includes('Please')">
+
+            {{ menuMessage }}
+
+          </p>
+
+        </form>
+
+      </div>
+
+
+      <!-- ====================================== -->
+      <!-- EXISTING MENU ITEMS -->
+      <!-- ====================================== -->
+
+      <div class="section-heading menu-list-heading">
+
+        <div>
+          <span class="section-label">CURRENT MENU</span>
+
+          <h2>Today's Menu Items</h2>
+
+          <p>
+            View and manage your existing food items.
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- MENU LOADING -->
+      <div *ngIf="isMenuLoading" class="menu-message">
+        Loading menu items...
+      </div>
+
+
+      <!-- EMPTY MENU -->
+      <div
+        *ngIf="!isMenuLoading && menuItems.length === 0"
+        class="menu-message">
+
+        No menu items available for today.
+
+      </div>
+
+
+      <!-- MENU GRID -->
+      <div
+        class="food-grid"
+        *ngIf="!isMenuLoading && menuItems.length > 0">
+
+        <div
+          class="food-card"
+          *ngFor="let item of menuItems">
+
+          <!-- FOOD IMAGE -->
+          <div class="food-image">
+
+            <span class="food-tag">
+              {{ item.mealType?.mealTypeName || 'Meal' }}
+            </span>
+
+<img
+  [src]="getFoodImage(item.foodName)"
+  [alt]="item.foodName"
+  class="food-image"
+/>
+
+          </div>
+
+
+          <!-- FOOD DETAILS -->
+          <div class="food-details">
+
+            <h3>{{ item.foodName }}</h3>
+
+            <p>
+              {{ item.description || 'Freshly prepared meal.' }}
+            </p>
+
+            <div class="food-footer">
+
+              <strong>
+                ₹{{ item.price | number:'1.2-2' }}
+              </strong>
+
+            </div>
+
+
+            <!-- EDIT / DELETE ACTIONS -->
+            <div class="menu-item-actions">
+
+              <button
+                type="button"
+                class="edit-button"
+                (click)="editMenuItem(item)">
+
+                ✎ Edit
+
+              </button>
+
+              <button
+                type="button"
+                class="delete-button"
+                (click)="deleteMenuItem(item.menuItemId)">
+
+                🗑 Delete
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+<!-- ACTIVE ORDERS SECTION -->
+<section
+  class="dashboard-content"
+  *ngIf="activeSection === 'active-orders'">
+
+  <div class="page-header">
+    <div>
+      <h1>Active Orders</h1>
+      <p>Monitor and manage ongoing food orders.</p>
+    </div>
+  </div>
+
+  <!-- ACTIVE ORDERS GRID -->
+  <div class="orders-grid" *ngIf="ongoingOrders.length > 0">
+
+    <div class="order-card" *ngFor="let order of ongoingOrders">
+
+      <div class="order-header">
+        <h3>Order #{{ order.orderId }}</h3>
+        <span class="order-status">{{ order.orderStatus }}</span>
+      </div>
+
+      <p>
+        Employee: {{ order.employee?.fullName || 'Employee' }}
+      </p>
+
+      <div class="order-items">
+        <div *ngFor="let item of order.orderItems">
+          {{ item.menuItem?.foodName }} × {{ item.quantity }}
+        </div>
+      </div>
+
+      <div class="order-footer">
+        <strong>₹{{ order.totalAmount }}</strong>
+
+        <button
+          *ngIf="order.orderStatus === 'Received'"
+          (click)="updateStatus(order.orderId, 'Preparing')">
+          Start Preparing
+        </button>
+
+        <button
+          *ngIf="order.orderStatus === 'Preparing'"
+          (click)="updateStatus(order.orderId, 'Ready')">
+          Mark as Ready
+        </button>
+
+        <button
+          *ngIf="order.orderStatus === 'Ready'"
+          (click)="updateStatus(order.orderId, 'Collected')">
+          Mark as Collected
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" *ngIf="ongoingOrders.length === 0">
+    <h3>No active orders</h3>
+    <p>New employee orders will appear here.</p>
+  </div>
+
+</section>
+<!-- COLLECTED ORDERS SECTION -->
+<section
+  class="dashboard-content"
+  *ngIf="activeSection === 'collected-orders'">
+
+  <div class="page-header">
+    <div>
+      <h1>Collected Orders</h1>
+      <p>View completed orders and clear them from the dashboard.</p>
+    </div>
+  </div>
+
+  <!-- COLLECTED ORDERS GRID -->
+  <div class="orders-grid" *ngIf="collectedOrders.length > 0">
+
+    <div class="order-card" *ngFor="let order of collectedOrders">
+
+      <div class="order-header">
+        <h3>Order #{{ order.orderId }}</h3>
+        <span class="order-status collected-status">
+          {{ order.orderStatus }}
+        </span>
+      </div>
+
+      <p>
+        Employee: {{ order.employee?.fullName || 'Employee' }}
+      </p>
+
+      <div class="order-items">
+        <div *ngFor="let item of order.orderItems">
+          {{ item.menuItem?.foodName }} × {{ item.quantity }}
+        </div>
+      </div>
+
+      <div class="order-footer">
+        <strong>₹{{ order.totalAmount }}</strong>
+
+        <button
+          class="clear-order-button"
+          (click)="clearOrder(order.orderId)">
+          Clear Order
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" *ngIf="collectedOrders.length === 0">
+    <h3>No collected orders</h3>
+    <p>Orders marked as collected will appear here.</p>
+  </div>
+
+</section>
+    <!-- FOOTER -->
+    <footer class="dashboard-footer">
+      © E@NOVAC · Cafeteria Management System
+    </footer>
+
+  </main>
+
+</div>

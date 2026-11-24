@@ -1,0 +1,686 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
+
+:host {
+  display: block;
+
+  --navy: #040026;
+  --navy-dark: #020019;
+  --blue: #16477D;
+  --teal: #1B9A8F;
+  --teal-light: #E6F4F1;
+  --orange: #FF8500;
+  --light-bg: #F5F7FA;
+  --text: #17152F;
+
+  font-family: 'DM Sans', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.login-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 49% 51%;
+  background: var(--light-bg);
+}
+
+
+/* ========================================
+   LEFT BRAND PANEL
+======================================== */
+
+.brand-panel {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  padding: 75px 12%;
+  color: white;
+  background: var(--navy);
+}
+
+.brand-content {
+  position: relative;
+  z-index: 2;
+}
+
+
+/* BRAND LOGO */
+
+.brand-panel-logo {
+  width: 100%;
+  max-width: 425px;
+  overflow: hidden;
+  line-height: 0;
+  background: var(--navy);
+}
+
+.brand-panel-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+
+/* BRAND CAPTION */
+
+.brand-caption {
+  margin-top: 18px;
+  color: #E0DFEC;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+
+/* BRAND DIVIDER */
+
+.brand-divider {
+  width: 105px;
+  height: 6px;
+  margin-top: 42px;
+  border-radius: 10px;
+  background: var(--orange);
+}
+
+
+/* MAIN HEADING */
+
+.brand-heading {
+  margin-top: 42px;
+}
+
+.brand-heading h1 {
+  margin: 0;
+  color: #FFFFFF;
+  font-size: clamp(38px, 4vw, 58px);
+  line-height: 1.16;
+  letter-spacing: -2px;
+  font-weight: 800;
+}
+
+.brand-heading h1 span {
+  color: var(--orange);
+}
+
+.brand-heading p {
+  max-width: 570px;
+  margin-top: 22px;
+  color: #D7D6E5;
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+
+/* FEATURE CARDS */
+
+.feature-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 40px;
+}
+
+.feature-card {
+  min-height: 145px;
+  padding: 17px 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  border: 1px solid rgba(27, 154, 143, 0.38);
+  border-radius: 18px;
+  background: rgba(27, 154, 143, 0.09);
+
+  transition: transform .2s, background .2s, border-color .2s;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  background: rgba(27, 154, 143, 0.17);
+  border-color: var(--teal);
+}
+
+.feature-icon {
+  width: 46px;
+  height: 46px;
+  color: var(--teal);
+}
+
+.feature-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.feature-card h3 {
+  margin: 10px 0 0;
+  color: white;
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+
+/* DECORATIVE SHAPES */
+
+.brand-decoration {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.decoration-top {
+  width: 330px;
+  height: 330px;
+  top: -235px;
+  right: -100px;
+  border: 55px solid rgba(27, 154, 143, 0.65);
+}
+
+.decoration-bottom {
+  width: 440px;
+  height: 250px;
+  bottom: -205px;
+  left: -160px;
+  background: linear-gradient(135deg, #FF9500, #F36C00);
+  transform: rotate(-15deg);
+}
+
+.brand-footer {
+  position: absolute;
+  bottom: 30px;
+  left: 12%;
+  z-index: 2;
+  color: #BDBBCF;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+
+/* ========================================
+   RIGHT LOGIN SECTION
+======================================== */
+
+.login-section {
+  min-height: 100vh;
+  padding: 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(circle at 100% 0%, #E7F2F0 0%, transparent 38%),
+    var(--light-bg);
+}
+
+
+/* LOGIN CARD */
+
+.login-card {
+  width: 100%;
+  max-width: 460px;
+  padding: 45px 40px;
+
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 22px;
+
+  background: #FFFFFF;
+  box-shadow: 0 15px 45px rgba(4, 0, 38, 0.08);
+
+  text-align: left;
+}
+
+
+/* WELCOME HEADING */
+
+.welcome-heading {
+  margin-bottom: 38px;
+}
+
+.welcome-heading h2 {
+  margin: 0;
+  color: var(--navy);
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.welcome-heading p {
+  margin-top: 9px;
+  margin-bottom: 0;
+  color: #737387;
+  font-size: 15px;
+}
+
+
+/* FORM */
+
+form {
+  text-align: left;
+}
+
+form label {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+/* PHONE INPUT */
+
+.phone-input {
+  width: 100%;
+  height: 62px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 14px;
+
+  border: 1px solid #D9DCE8;
+  border-radius: 12px;
+  background: #FFFFFF;
+
+  transition: border .2s, box-shadow .2s;
+}
+
+.phone-input:focus-within {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(27, 154, 143, 0.12);
+}
+
+
+/* COUNTRY CODE */
+
+.country-code {
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding-right: 14px;
+  border-right: 1px solid #E0E1E9;
+
+  color: var(--navy);
+  flex-shrink: 0;
+}
+
+.country-code strong {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+
+/* INDIAN FLAG */
+
+.india-flag {
+  width: 23px;
+  height: 16px;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+  border-radius: 2px;
+  flex-shrink: 0;
+
+  box-shadow: 0 0 1px rgba(0, 0, 0, .3);
+}
+
+.india-flag .saffron,
+.india-flag .white,
+.india-flag .green {
+  display: block;
+  width: 100%;
+  height: 33.333%;
+}
+
+.india-flag .saffron {
+  background: #FF9933;
+}
+
+.india-flag .white {
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.india-flag .green {
+  background: #138808;
+}
+
+.chakra {
+  width: 5px;
+  height: 5px;
+  border: 1px solid #000080;
+  border-radius: 50%;
+}
+
+
+/* MOBILE NUMBER FIELD */
+
+.phone-input input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 16px;
+
+  border: none;
+  outline: none;
+  background: transparent;
+
+  color: var(--navy);
+  font-family: inherit;
+  font-size: 15px;
+}
+
+.phone-input input::placeholder {
+  color: #9292A3;
+}
+
+
+/* SEND OTP BUTTON */
+
+.send-otp-button {
+  width: 100%;
+  height: 58px;
+  margin-top: 25px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 13px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: linear-gradient(100deg, #FF9500, #F47700);
+  color: #FFFFFF;
+
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.send-otp-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 133, 0, 0.22);
+}
+
+.send-otp-button span {
+  font-size: 22px;
+}
+
+
+/* REGISTER SECTION */
+
+.register-section {
+  margin-top: 28px;
+  text-align: center;
+}
+
+.register-section p {
+  margin: 0;
+  color: #737387;
+  font-size: 14px;
+}
+
+.register-section a {
+  margin-left: 5px;
+  color: var(--teal);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.register-section a:hover {
+  color: #11796F;
+  text-decoration: underline;
+}
+
+
+/* ========================================
+   TABLET RESPONSIVENESS
+======================================== */
+
+@media (max-width: 1100px) {
+
+  .login-page {
+    grid-template-columns: 45% 55%;
+  }
+
+  .brand-panel {
+    padding: 55px 8%;
+  }
+
+  .feature-list {
+    gap: 10px;
+  }
+
+  .feature-card {
+    min-height: 125px;
+  }
+
+  .login-section {
+    padding: 25px;
+  }
+
+  .login-card {
+    padding: 38px 28px;
+  }
+}
+
+
+/* ========================================
+   MOBILE RESPONSIVENESS
+======================================== */
+
+@media (max-width: 760px) {
+
+  .login-page {
+    display: block;
+  }
+
+  .brand-panel {
+    min-height: auto;
+    padding: 38px 25px 35px;
+  }
+
+  .brand-panel-logo {
+    max-width: 280px;
+  }
+
+  .brand-caption {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+  }
+
+  .brand-divider {
+    margin-top: 25px;
+  }
+
+  .brand-heading {
+    margin-top: 25px;
+  }
+
+  .brand-heading h1 {
+    font-size: 36px;
+  }
+
+  .brand-heading p {
+    font-size: 15px;
+  }
+
+  .feature-list {
+    gap: 10px;
+    margin-top: 25px;
+  }
+
+  .feature-card {
+    min-height: 110px;
+    border-radius: 14px;
+  }
+
+  .feature-icon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .feature-card h3 {
+    font-size: 12px;
+  }
+
+  .brand-footer {
+    display: none;
+  }
+
+  .decoration-bottom {
+    opacity: .25;
+  }
+
+  .login-section {
+    min-height: auto;
+    padding: 30px 18px;
+  }
+
+  .login-card {
+    max-width: 500px;
+    padding: 35px 24px;
+    border-radius: 20px;
+  }
+
+  .welcome-heading h2 {
+    font-size: 30px;
+  }
+}
+/* OTP Input Styling */
+#otp {
+  width: 100%;
+  height: 52px;
+  padding: 0 16px;
+  margin-top: 10px;
+
+  border: 1px solid #dce1e8;
+  border-radius: 10px;
+  background: #ffffff;
+
+  font-size: 16px;
+  font-family: inherit;
+  color: #080426;
+  letter-spacing: 4px;
+
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+#otp::placeholder {
+  letter-spacing: normal;
+  color: #9ca3af;
+}
+
+#otp:focus {
+  border-color: #1B9A8F;
+  box-shadow: 0 0 0 3px rgba(27, 154, 143, 0.12);
+}
+
+#otp:disabled {
+  background: #f3f4f6;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
+@media (max-width: 380px) {
+
+  .brand-heading h1 {
+    font-size: 31px;
+  }
+
+  .feature-list {
+    gap: 7px;
+  }
+
+  .feature-card {
+    padding: 12px 5px;
+  }
+
+  .login-card {
+    padding: 30px 17px;
+  }
+}
+.brand-panel {
+  background-color: #040026;
+}
+
+.brand-panel-logo {
+  background-color: transparent;
+}
+
+.brand-panel-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+/* Error Message */
+.error-message {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #FDECEC;
+  color: #C62828;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Success Message */
+.success-message {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #E6F4F1;
+  color: #147A70;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Back Button */
+.back-button {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid #1B9A8F;
+  border-radius: 8px;
+  background: transparent;
+  color: #1B9A8F;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #E6F4F1;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

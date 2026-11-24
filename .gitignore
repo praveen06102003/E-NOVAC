@@ -1,0 +1,21 @@
+# .NET build files
+**/bin/
+**/obj/
+.vs/
+*.user
+*.suo
+
+# Angular generated files
+**/node_modules/
+**/dist/
+**/.angular/
+
+# Local configuration and secrets
+**/appsettings.Development.json
+**/secrets.json
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db

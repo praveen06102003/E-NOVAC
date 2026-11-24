@@ -1,0 +1,70 @@
+
+
+<div class="cart-container">
+
+  <div class="cart-top">
+    <button type="button"
+            class="back-button"
+            routerLink="/dashboard">
+      ← Back
+    </button>
+  </div>
+
+  <div class="cart-header">
+    <span class="section-label">YOUR SELECTION</span>
+    <h2>My Cart</h2>
+    <p>Review your items before placing your order.</p>
+  </div>
+  <div *ngIf="cartItems.length === 0" class="empty-cart">
+    <h3>Your cart is empty!</h3>
+    <p>Add some delicious food from today's menu.</p>
+  </div>
+
+  <div *ngFor="let item of cartItems" class="cart-item">
+
+    <div class="item-details">
+      <h3>{{ item.menuItem.foodName }}</h3>
+      <p>₹{{ item.menuItem.price }}</p>
+    </div>
+
+    <div class="quantity-controls">
+      <button (click)="decreaseQuantity(item.menuItem.menuItemId)">−</button>
+
+      <span>{{ item.quantity }}</span>
+
+      <button (click)="increaseQuantity(item.menuItem.menuItemId)">+</button>
+    </div>
+
+    <p class="item-total">
+      ₹{{ item.menuItem.price * item.quantity }}
+    </p>
+
+    <button
+      class="remove-button"
+      (click)="removeItem(item.menuItem.menuItemId)">
+      Remove
+    </button>
+
+  </div>
+
+<div *ngIf="cartItems.length > 0" class="cart-summary">
+  <div>
+    <span>ORDER TOTAL</span>
+    <h3>₹{{ totalAmount }}</h3>
+  </div>
+</div>
+  <div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+<button
+  *ngIf="cartItems.length > 0"
+  (click)="placeOrder()"
+  [disabled]="isPlacingOrder">
+  {{ isPlacingOrder ? 'Placing Order...' : 'Place Order' }}
+</button>
+</div>

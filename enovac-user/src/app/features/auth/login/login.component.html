@@ -1,0 +1,193 @@
+
+<div class="login-page">
+
+  <!-- LEFT BRANDING PANEL -->
+  <section class="brand-panel">
+
+    <div class="brand-content">
+
+      <div class="brand-panel-logo">
+        <img src="/assets/enovac-logo-darknavy.png" alt="E@NOVAC">
+      </div>
+
+      <div class="brand-caption">
+        EMPLOYEE CAFETERIA MANAGEMENT SYSTEM
+      </div>
+
+      <div class="brand-divider"></div>
+
+      <div class="brand-heading">
+        <h1>
+          Your Cafeteria,<br>
+          Made <span>Simple.</span>
+        </h1>
+
+        <p>
+          Order your favourite meals, explore today's menu
+          and track your cafeteria orders — all in one place.
+        </p>
+      </div>
+
+      <div class="feature-list">
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 48 48" fill="none">
+              <path d="M15 8V25M10 8V19M20 8V19M10 19C10 24 20 24 20 19M15 25V40"
+                stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <path d="M33 8C27 13 27 25 33 27V40M33 8V27"
+                stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Today's<br>Menu</h3>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 48 48" fill="none">
+              <path d="M8 29H40L36 21C34 14 28 10 24 10C17 10 12 15 10 21L8 29Z"
+                stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M5 33H43M13 38H35M24 7V4"
+                stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Easy Food<br>Ordering</h3>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 48 48" fill="none">
+              <path d="M24 5L40 13V25C40 34 32 40 24 44C16 40 8 34 8 25V13L24 5Z"
+                stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M17 24L22 29L32 18"
+                stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Order<br>Tracking</h3>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="brand-decoration decoration-top"></div>
+    <div class="brand-decoration decoration-bottom"></div>
+
+    <div class="brand-footer">
+      MADE FOR BETTER CAFETERIA EXPERIENCES.
+    </div>
+
+  </section>
+
+  <!-- RIGHT LOGIN PANEL -->
+  <section class="login-section">
+
+    <div class="login-card">
+
+      <div class="welcome-heading">
+        <h2>{{ otpSent ? 'Verify Your Number' : 'Welcome Back!' }}</h2>
+        <p>{{ otpSent ? 'Enter the OTP sent to your mobile.' : 'Sign in to continue.' }}</p>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="success-message" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <!-- Mobile Number Form -->
+      <form (ngSubmit)="requestOtp()" *ngIf="!otpSent">
+
+        <label for="mobile">Mobile Number</label>
+
+        <div class="phone-input">
+
+          <div class="country-code">
+            <div class="india-flag">
+              <span class="saffron"></span>
+              <span class="white">
+                <span class="chakra"></span>
+              </span>
+              <span class="green"></span>
+            </div>
+            <strong>+91</strong>
+          </div>
+
+          <input
+            id="mobile"
+            type="tel"
+            name="mobileNumber"
+            [(ngModel)]="mobileNumber"
+            placeholder="Enter your mobile number"
+            maxlength="10"
+            autocomplete="tel-national"
+            required
+            [disabled]="isLoading"
+          />
+
+        </div>
+
+        <button
+          type="submit"
+          class="send-otp-button"
+          [disabled]="isLoading">
+
+          {{ isLoading ? 'Please wait...' : 'Send OTP' }}
+          <span *ngIf="!isLoading">→</span>
+
+        </button>
+
+      </form>
+
+      <!-- OTP Verification Form -->
+      <form (ngSubmit)="verifyOtp()" *ngIf="otpSent">
+
+        <label for="otp">Enter OTP</label>
+
+        <input
+          id="otp"
+          type="text"
+          name="otp"
+          [(ngModel)]="otp"
+          placeholder="Enter the 6-digit OTP"
+          maxlength="6"
+          required
+          [disabled]="isLoading"
+        />
+
+        <button
+          type="submit"
+          class="send-otp-button"
+          [disabled]="isLoading">
+
+          {{ isLoading ? 'Verifying...' : 'Verify & Login' }}
+          <span *ngIf="!isLoading">→</span>
+
+        </button>
+
+        <button
+          type="button"
+          class="back-button"
+          (click)="otpSent = false; otp = ''; errorMessage = ''; successMessage = ''"
+          [disabled]="isLoading">
+
+          Change Number
+
+        </button>
+
+      </form>
+
+      <div class="register-section" *ngIf="!otpSent">
+        <p>
+          New to E@NOVAC?
+          <a routerLink="/register">Register Now</a>
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+</div>

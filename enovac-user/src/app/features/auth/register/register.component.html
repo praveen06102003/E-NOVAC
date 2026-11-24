@@ -1,0 +1,121 @@
+
+<div class="register-page">
+
+  <div class="register-card">
+
+<div class="register-heading">
+  <h1>Let's Get Started</h1>
+  <p>Sign up to explore today's cafeteria menu.</p>
+</div>
+
+    <!-- Error Message -->
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-message" *ngIf="successMessage">
+      {{ successMessage }}
+    </div>
+
+    <!-- Registration Form -->
+    <form (ngSubmit)="requestOtp()" *ngIf="!otpSent">
+
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input
+          id="fullName"
+          type="text"
+          name="fullName"
+          [(ngModel)]="fullName"
+          placeholder="Enter your full name"
+          required
+          [disabled]="isLoading"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="mobileNumber">Mobile Number</label>
+
+        <div class="phone-input">
+          <div class="country-code">
+            <span class="india-flag">
+              <span class="saffron"></span>
+              <span class="white"><span class="chakra"></span></span>
+              <span class="green"></span>
+            </span>
+            <strong>+91</strong>
+          </div>
+
+          <input
+            id="mobileNumber"
+            type="tel"
+            name="mobileNumber"
+            [(ngModel)]="mobileNumber"
+            placeholder="Enter your mobile number"
+            maxlength="10"
+            required
+            [disabled]="isLoading"
+          />
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="register-button"
+        [disabled]="isLoading">
+
+        {{ isLoading ? 'Please wait...' : 'Send OTP' }}
+        <span *ngIf="!isLoading">→</span>
+
+      </button>
+
+    </form>
+
+    <!-- OTP Verification Form -->
+    <form (ngSubmit)="verifyOtp()" *ngIf="otpSent">
+
+      <div class="form-group">
+        <label for="otp">Enter OTP</label>
+        <input
+          id="otp"
+          type="text"
+          name="otp"
+          [(ngModel)]="otp"
+          placeholder="Enter the 6-digit OTP"
+          maxlength="6"
+          required
+          [disabled]="isLoading"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="register-button"
+        [disabled]="isLoading">
+
+        {{ isLoading ? 'Verifying...' : 'Verify & Create Account' }}
+        <span *ngIf="!isLoading">→</span>
+
+      </button>
+
+      <button
+        type="button"
+        class="back-button"
+        (click)="otpSent = false; otp = ''; errorMessage = ''; successMessage = ''"
+        [disabled]="isLoading">
+
+        Change Details
+
+      </button>
+
+    </form>
+
+    <div class="login-link">
+      Already have an account?
+      <a routerLink="/login">Login</a>
+    </div>
+
+  </div>
+
+</div>

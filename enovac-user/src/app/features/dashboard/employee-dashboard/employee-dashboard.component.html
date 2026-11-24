@@ -1,0 +1,504 @@
+
+<div class="dashboard-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-brand">
+      <img
+        src="/assets/enovac-logo-darknavy.png"
+        alt="E@NOVAC"
+        class="sidebar-logo"
+      />
+    </div>
+
+    <div class="sidebar-menu">
+
+      <p class="menu-label">MAIN MENU</p>
+
+      <a class="nav-item"
+         [class.active]="activeMenu === 'today'"
+         (click)="showMenu('today')">
+        <span class="nav-icon">🍽</span>
+        <span>Today's Menu</span>
+      </a>
+
+      <a class="nav-item"
+         [class.active]="activeMenu === 'yesterday'"
+         (click)="showMenu('yesterday')">
+        <span class="nav-icon">📅</span>
+        <span>Yesterday's Menu</span>
+      </a>
+
+      <p class="menu-label">MY ACTIVITY</p>
+
+      <a class="nav-item"
+         [class.active]="activeMenu === 'likes'"
+         (click)="showMenu('likes')">
+        <span class="nav-icon">♡</span>
+        <span>My Likes</span>
+      </a>
+
+      <a class="nav-item"
+         [class.active]="activeMenu === 'orders'"
+         (click)="showMenu('orders')">
+        <span class="nav-icon">▤</span>
+        <span>My Orders</span>
+      </a>
+
+    </div>
+
+<div class="sidebar-bottom">
+  <button class="logout-button" (click)="logout()">
+    <span class="logout-icon">↗</span>
+    <span>Logout</span>
+  </button>
+</div>
+
+  </aside>
+
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- TOP HEADER -->
+    <header class="top-header">
+
+      <div>
+        <span class="header-label">CAFETERIA PORTAL</span>
+        <h2>Dashboard</h2>
+      </div>
+
+      <div class="header-right">
+
+        <button class="cart-button" routerLink="/cart">
+          🛒 Cart
+        </button>
+
+        <div class="profile-section">
+
+          <div class="profile-avatar">
+            {{ employeeName.charAt(0).toUpperCase() }}
+          </div>
+
+<div class="profile-details">
+  <strong>{{ employeeName }}</strong>
+  <span>E@NOVAC Member</span>
+</div>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- PAGE CONTENT -->
+    <section class="dashboard-content">
+
+      <!-- WELCOME SECTION -->
+      <div class="welcome-banner"
+           *ngIf="activeMenu !== 'orders'">
+
+        <div class="welcome-text">
+
+          <span class="welcome-label">
+            YOUR CAFETERIA, MADE SIMPLE
+          </span>
+
+          <h1>Hello, {{ employeeName }}! 👋</h1>
+
+          <p>
+            Hungry? Explore today's menu and order your favourite meals.
+          </p>
+
+        </div>
+
+<div class="welcome-decoration">
+
+  <div class="banner-image-container">
+
+    <img
+      [src]="bannerImageOne"
+      class="banner-food-image"
+      [class.visible]="activeBannerLayer === 'one'"
+      alt="Featured food"
+    />
+
+    <img
+      [src]="bannerImageTwo"
+      class="banner-food-image"
+      [class.visible]="activeBannerLayer === 'two'"
+      alt="Featured food"
+    />
+
+  </div>
+
+  <div class="banner-dots">
+    <span
+      *ngFor="let image of bannerImages; let i = index"
+      [class.active]="currentBannerImage === i">
+    </span>
+  </div>
+
+</div>
+      </div>
+
+
+      <!-- QUICK SUMMARY -->
+      <div class="summary-grid"
+           *ngIf="activeMenu !== 'orders'">
+
+        <div class="summary-card">
+          <div class="summary-icon teal-icon">🍽</div>
+          <div>
+            <span>Today's Menu</span>
+            <h3>Explore Meals</h3>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon orange-icon">♡</div>
+          <div>
+            <span>Your Favourites</span>
+            <h3>{{ likedMenuItemIds.length }} Liked Items</h3>
+          </div>
+        </div>
+
+        <!-- <div class="summary-card">
+          <div class="summary-icon navy-icon">📦</div>
+          <div>
+            <span>Your Activity</span>
+            <h3>My Orders</h3>
+          </div>
+        </div> -->
+
+      </div>
+
+
+      <!-- SECTION HEADING -->
+      <div class="section-heading">
+
+        <div>
+
+          <span class="section-label">
+            {{
+              activeMenu === 'likes' ? 'YOUR FAVOURITES' :
+              activeMenu === 'orders' ? 'ORDER HISTORY' :
+              'CAFETERIA MENU'
+            }}
+          </span>
+
+          <h2>
+            {{
+              activeMenu === 'today' ? "Today's Menu" :
+              activeMenu === 'yesterday' ? "Yesterday's Menu" :
+              activeMenu === 'likes' ? "My Likes" :
+              "My Orders"
+            }}
+          </h2>
+
+          <p>
+            {{
+              activeMenu === 'likes'
+                ? 'Your favourite cafeteria meals.'
+                : activeMenu === 'orders'
+                  ? 'Track your cafeteria orders and their status.'
+                  : 'Explore the meals available in your cafeteria.'
+            }}
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- MEAL CATEGORIES -->
+      <div class="category-list"
+           *ngIf="activeMenu === 'today' || activeMenu === 'yesterday'">
+
+        <button
+          class="category-button"
+          [class.selected]="selectedMealTypeId === null"
+          (click)="filterMenu(null)">
+          All Meals
+        </button>
+
+        <button
+          class="category-button"
+          [class.selected]="selectedMealTypeId === 1"
+          (click)="filterMenu(1)">
+          ☕ Breakfast
+        </button>
+
+        <button
+          class="category-button"
+          [class.selected]="selectedMealTypeId === 2"
+          (click)="filterMenu(2)">
+          🍛 Lunch
+        </button>
+
+        <button
+          class="category-button"
+          [class.selected]="selectedMealTypeId === 3"
+          (click)="filterMenu(3)">
+          🥪 Evening Snacks
+        </button>
+
+      </div>
+
+
+      <!-- MENU LOADING -->
+      <div *ngIf="activeMenu === 'today' && isLoading"
+           class="menu-message">
+        Loading today's menu...
+      </div>
+
+      <div *ngIf="activeMenu === 'yesterday' && isYesterdayLoading"
+           class="menu-message">
+        Loading yesterday's menu...
+      </div>
+
+
+      <!-- MENU ERROR -->
+      <div *ngIf="errorMessage &&
+                  (activeMenu === 'today' || activeMenu === 'yesterday')"
+           class="menu-message error">
+        {{ errorMessage }}
+      </div>
+
+
+      <!-- TODAY'S / YESTERDAY'S MENU -->
+      <div
+        class="food-grid"
+        *ngIf="(activeMenu === 'today' || activeMenu === 'yesterday')
+          && !isLoading
+          && !isYesterdayLoading
+          && !errorMessage">
+
+        <div
+          class="food-card"
+          *ngFor="let item of (activeMenu === 'today'
+            ? filteredMenu
+            : filteredYesterdayMenu)">
+
+          <div class="food-image">
+
+            <span class="food-tag">
+              {{ item.mealType?.mealTypeName || 'Meal' }}
+            </span>
+
+            <button
+              class="like-button"
+              [class.liked]="likedMenuItemIds.includes(item.menuItemId)"
+              (click)="toggleLike(item.menuItemId)"
+              type="button">
+              {{ likedMenuItemIds.includes(item.menuItemId) ? '♥' : '♡' }}
+            </button>
+
+            <img
+              *ngIf="item.imageUrl"
+              [src]="item.imageUrl"
+              [alt]="item.foodName"
+            />
+
+<img
+  [src]="getFoodImage(item.foodName)"
+  [alt]="item.foodName"
+  class="food-card-image"
+/>
+
+          </div>
+
+          <div class="food-details">
+
+            <h3>{{ item.foodName }}</h3>
+
+            <p>
+              {{ item.description || 'Freshly prepared meal.' }}
+            </p>
+
+            <div class="food-footer">
+
+              <strong>
+                ₹{{ item.price | number:'1.2-2' }}
+              </strong>
+
+<button
+  *ngIf="activeMenu === 'today'"
+  class="add-button"
+  (click)="addToCart(item)"
+  type="button">
+  Add to Cart
+</button>
+
+<span *ngIf="activeMenu === 'yesterday'" class="view-only-label">
+ 
+</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- EMPTY MENU -->
+      <div
+        *ngIf="activeMenu === 'today'
+          && !isLoading
+          && !errorMessage
+          && filteredMenu.length === 0"
+        class="menu-message">
+        No menu items available today.
+      </div>
+
+      <div
+        *ngIf="activeMenu === 'yesterday'
+          && !isYesterdayLoading
+          && !errorMessage
+          && filteredYesterdayMenu.length === 0"
+        class="menu-message">
+        No menu items available yesterday.
+      </div>
+
+
+      <!-- MY LIKES -->
+      <div *ngIf="activeMenu === 'likes'">
+
+        <div
+          class="menu-message"
+          *ngIf="myLikes.length === 0">
+          You haven't liked any food items yet.
+        </div>
+
+        <div
+          class="food-grid"
+          *ngIf="myLikes.length > 0">
+
+          <div
+            class="food-card"
+            *ngFor="let item of myLikes">
+
+            <div class="food-image">
+
+              <button
+                class="like-button liked"
+                type="button"
+                (click)="toggleLike(item.menuItemId)">
+                ♥
+              </button>
+<img
+  [src]="getFoodImage(item.foodName)"
+  [alt]="item.foodName"
+  class="food-image"
+/>
+
+            </div>
+
+            <div class="food-details">
+
+              <h3>{{ item.foodName }}</h3>
+
+              <div class="food-footer">
+
+                <strong>
+                  ₹{{ item.price | number:'1.2-2' }}
+                </strong>
+
+                <button
+                  class="add-button"
+                  type="button"
+                  (click)="toggleLike(item.menuItemId)">
+                  Remove
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- MY ORDERS -->
+      <div *ngIf="activeMenu === 'orders'" class="orders-section">
+
+        <div *ngIf="isOrdersLoading" class="menu-message">
+          Loading your orders...
+        </div>
+
+        <div *ngIf="ordersError" class="menu-message error">
+          {{ ordersError }}
+        </div>
+
+        <div
+          *ngIf="!isOrdersLoading && !ordersError && orders.length === 0"
+          class="menu-message">
+          You haven't placed any orders yet.
+        </div>
+
+        <div
+          class="order-card"
+          *ngFor="let order of displayedOrders">
+
+          <div class="order-header">
+
+            <div>
+              <span class="section-label">ORDER #{{ order.orderId }}</span>
+              <h3>Order Details</h3>
+              <p>{{ order.orderDate | date:'medium' }}</p>
+            </div>
+
+            <span class="order-status"
+                  [ngClass]="order.orderStatus.toLowerCase()">
+              {{ order.orderStatus }}
+            </span>
+
+          </div>
+
+          <div class="order-items">
+
+            <div class="order-item"
+                 *ngFor="let item of order.orderItems">
+
+              <span>
+                {{ item.menuItem?.foodName || 'Food item' }}
+                × {{ item.quantity }}
+              </span>
+
+              <strong>
+                ₹{{ item.unitPrice * item.quantity | number:'1.2-2' }}
+              </strong>
+
+            </div>
+
+          </div>
+
+          <div class="order-total">
+            <span>Total Amount</span>
+            <strong>
+              ₹{{ order.totalAmount | number:'1.2-2' }}
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer class="dashboard-footer">
+      © E@NOVAC · Cafeteria Management System
+    </footer>
+
+  </main>
+
+</div>
